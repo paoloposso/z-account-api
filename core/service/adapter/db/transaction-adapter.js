@@ -1,4 +1,4 @@
-const { TransactionModel } = require('../../../infra/mongo/transaction-model');
+const { TransactionModel } = require('../../../../infra/mongo/transaction-model');
 
 class TransactionAdapter {
 

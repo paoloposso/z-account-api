@@ -1,4 +1,4 @@
-const { AccountModel } = require('../../../infra/mongo/account-model');
+const { AccountModel } = require('../../../../infra/mongo/account-model');
 
 class AccountAdapter {
 
