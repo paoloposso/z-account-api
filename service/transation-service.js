@@ -30,7 +30,7 @@ module.exports.deposit = (transaction) => {
         
         transaction.id = v4();
 
-        return new transactionAdapter.create(transaction);
+        return transactionAdapter.create(transaction);
     });
 }
 
@@ -65,7 +65,7 @@ module.exports.withdrawal = async (transaction) => {
         transaction.id = v4();
         transaction.accountId = account.id;
 
-        return new transactionAdapter.create(transaction);
+        return transactionAdapter.create(transaction);
     });
 }
 
@@ -73,15 +73,15 @@ module.exports.transfer =  async (transaction) => {
 
     if (!transaction.value || transaction.value === '' || transaction.value === 0) {
         return Promise.reject({message: 'value is required', type: 'param'});
-    }
-    else if (isNaN(transaction.value)) {
+    } else if (isNaN(transaction.value)) {
         return Promise.reject({message: 'value is invalid', type: 'param'});
-    }
-    else if (isNaN(transaction.document)) {
+    } else if (isNaN(transaction.document)) {
         return Promise.reject({message: 'document is invalid', type: 'param'});
+    } else if (isNaN(transaction.documentTo)) {
+        return Promise.reject({message: 'documentTo is invalid', type: 'param'});
     }
 
-    let accountFrom = await accountAdapter.getByDocument(transaction.documentFrom);
+    let accountFrom = await accountAdapter.getByDocument(transaction.document);
     let accountTo = await accountAdapter.getByDocument(transaction.documentTo);
 
     if (!accountFrom || !accountFrom.id) {

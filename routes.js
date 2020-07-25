@@ -1,6 +1,6 @@
 const express = require('express');
 // const { AccountController } = require('./controllers/account-controller');
-const { deposit } = require('./service/transation-service');
+const { deposit, transfer } = require('./service/transation-service');
 const { createAccount, getByDocument } = require('./service/account');
 
 const app = express();
@@ -28,6 +28,14 @@ app.get('/account/bydocument/:document', (req, res) => {
 
 app.post('/transaction/deposit', (req, res) => {
     deposit(req.body).then((transaction) => {
+        return res.json(transaction);
+    }).catch((err) => { 
+        return handleHttpError(res, err);
+    });
+});
+
+app.post('/transaction/transfer', (req, res) => {
+    transfer(req.body).then((transaction) => {
         return res.json(transaction);
     }).catch((err) => { 
         return handleHttpError(res, err);

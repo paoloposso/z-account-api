@@ -31,6 +31,20 @@ describe('Account tests', () => {
         done();
     });
 
+    it('should insert account for John', async (done) => {
+
+        const res = await request.post('/account').send({
+            "name": "Jorge",
+            "document": "01234567899"
+        });
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.name).toEqual('Jorge');
+        expect(res.body._id).not.toEqual('');
+
+        done();
+    });
+
     it('should list account by doc', async (done) => {
         const res = await request.get('/account/bydocument/01234567890');
 
@@ -41,9 +55,22 @@ describe('Account tests', () => {
 
     it('should deposit to John', async (done) => {
 
-        const res = await request.post('/account').send({
+        const res = await request.post('/transaction/deposit').send({
             document: "01234567890",
             value: 50.50
+        });
+
+        expect(res.statusCode).toEqual(200);
+
+        done();
+    });
+
+    it('should transfer to Jorge', async (done) => {
+
+        const res = await request.post('/transaction/transfer').send({
+            document: "01234567890",
+            documentTo: "01234567899",
+            value: 200
         });
 
         expect(res.statusCode).toEqual(200);
