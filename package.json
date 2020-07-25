@@ -1,0 +1,24 @@
+{
+  "name": "z-test-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "env NODE_ENV=test jest --detectOpenHandles",
+    "test:watch": "env NODE_ENV=test jest --watch --detectOpenHandles",
+    "start": "node server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.25",
+    "node-uuid": "^1.4.8"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "jest": "^26.0.1",
+    "supertest": "^4.0.2"
+  }
+}
