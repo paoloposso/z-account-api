@@ -8,17 +8,28 @@ let Transaction = new Schema(
             type: String,
             required: true
         },
-        value: {
-            type: number,
+        accountId: {
+            type: String,
             required: true
         },
-        type: {
+        value: {
+            type: Number,
+            required: true
+        },
+        operation: {
             type: String,
-            enum: ['credit', 'debit']
+            enum: ['deposit', 'withdrawal', 'transfer']
+        },
+        transferToAccount: {
+            type: String
+        },
+        time: {
+            type: Date,
+            default: new Date()
         }
     }
 );
 
-const Model = mongoose.model("transactions", Transaction);
+const TransactionModel = mongoose.model("transactions", Transaction);
 
-module.exports = { Model };
+module.exports = { TransactionModel };

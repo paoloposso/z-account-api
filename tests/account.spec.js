@@ -2,6 +2,7 @@ const { app } = require('../routes');
 const supertest = require('supertest');
 const request = supertest(app);
 const { AccountModel } = require('../infra/mongo/account-model');
+const { TransactionModel } = require('../infra/mongo/transaction-model');
 
 const { connectToMongoDb } = require('../infra/mongo/mongo-connect.js');
 
@@ -11,6 +12,7 @@ jest.setTimeout(30000);
 
 beforeAll(async () => {
     await AccountModel.deleteMany({});
+    await TransactionModel.deleteMany({});
 });
 
 describe('Account tests', () => {   
@@ -29,13 +31,25 @@ describe('Account tests', () => {
         done();
     });
 
-    // it('should list all accounts', async (done) => {
-    //     const res = await request.get('/accounts/all');
+    it('should list account by doc', async (done) => {
+        const res = await request.get('/account/bydocument/01234567890');
 
-    //     expect(res.body.accounts && res.body.accounts.length > 0).toBeTruthy();
+        expect(res.body.document).toEqual('01234567890');
 
-    //     done();
-    // });
+        done();
+    });
+
+    it('should deposit to John', async (done) => {
+
+        const res = await request.post('/account').send({
+            document: "01234567890",
+            value: 50.50
+        });
+
+        expect(res.statusCode).toEqual(200);
+
+        done();
+    });
 });
 
 afterAll(async done => {

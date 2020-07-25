@@ -17,7 +17,8 @@ let Account = new Schema(
             required: true
         },
         currentBalance: {
-            type: Number
+            type: Number,
+            default: 0
         }
     }
 );

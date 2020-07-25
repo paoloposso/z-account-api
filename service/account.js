@@ -1,15 +1,23 @@
 
-const { AccountAdapter } = require('./adapter/db/account-adapter.js');
-const { v4 } = require('node-uuid');
+const { accountAdapter } = require('./adapter/db/account-adapter.js');
+const { generateUuid } = require('../cross-cutting/id-generation');
 
 module.exports.createAccount = (account) => {
     if (!account.document || account.document === '') {
-        throw new Error('document is required');
+        return Promise.reject({message: 'document is required', type: 'param'});
     }
     else if (!account.name || account.name === '') {
-        throw new Error('document is required');
+        return Promise.reject({message: 'name is required', type: 'param'});
     }
     
-    account.id = v4();
-    return new AccountAdapter().create(account);
+    account.id = generateUuid();
+    return accountAdapter.create(account);
+}
+
+module.exports.getByDocument = (document) => {
+    if (!document || document === '') {
+        return Promise.reject({message: 'document is required', type: 'param'});
+    }
+    
+    return accountAdapter.getByDocument(document);
 }

@@ -1,5 +1,5 @@
 var uuid = require('node-uuid');
 
-module.exports.generate = () => {
+module.exports.generateUuid = () => {
     return uuid.v4();
 }
