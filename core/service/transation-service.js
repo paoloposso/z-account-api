@@ -37,7 +37,7 @@ module.exports.deposit = (transaction) => {
     });
 }
 
-module.exports.withdrawal = async (transaction) => {
+module.exports.withdraw = async (transaction) => {
 
     if (!transaction.value || transaction.value === '' || transaction.value === 0) {
         return Promise.reject({message: 'value is required', type: 'param'});
@@ -57,9 +57,6 @@ module.exports.withdrawal = async (transaction) => {
 
         transaction.type = 'withdrawal';
 
-        transaction.value = transaction.value * 0.99;
-        transaction.value = transaction.value.toFixed(2);
-
         if (account.currentBalance - transaction.value < 0) {
             return Promise.reject({message: 'not enough funds', type: 'param'});
         }
@@ -68,7 +65,7 @@ module.exports.withdrawal = async (transaction) => {
         transaction.accountId = account.id;
 
         return transactionAdapter.create(transaction).then((transaction) => {
-            accountAdapter.updateBalance(account.id, account.currentBalance - transaction.value);
+            accountAdapter.updateBalance(account.id, (account.currentBalance  - (transaction.value * 1.01)).toFixed(2));
             return transaction;
         });
     });

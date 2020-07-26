@@ -57,7 +57,19 @@ describe('Account tests', () => {
 
         const res = await request.post('/transaction/deposit').send({
             document: "01234567890",
-            value: 50.50
+            value: 500.95
+        });
+
+        expect(res.statusCode).toEqual(200);
+
+        done();
+    });
+
+    it('should withdraw from Johns', async (done) => {
+
+        const res = await request.post('/transaction/withdraw').send({
+            document: "01234567890",
+            value: 50
         });
 
         expect(res.statusCode).toEqual(200);
