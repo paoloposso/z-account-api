@@ -34,6 +34,23 @@ class AccountAdapter {
             };
         });
     }
+
+    /**
+     * 
+     * @param {String} id 
+     * @param {Number} balance 
+     */
+    updateBalance(id, balance) {
+
+        return AccountModel.findById(id).then(account => {
+            account.currentBalance = balance;
+            account.save();
+        });
+
+        // return AccountModel.findOneAndUpdate({_id: id}, {
+        //     currentBalance: balance
+        // });
+    }
 }
 
 module.exports.accountAdapter = new AccountAdapter();

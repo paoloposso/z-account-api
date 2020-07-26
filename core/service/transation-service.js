@@ -30,10 +30,12 @@ module.exports.deposit = (transaction) => {
         
         transaction.id = v4();
 
-        return transactionAdapter.create(transaction);
+        return transactionAdapter.create(transaction).then((transaction) => {
+            accountAdapter.updateBalance(account.id, account.currentBalance + transaction.value);
+            return transaction;
+        });
     });
 }
-
 
 module.exports.withdrawal = async (transaction) => {
 
@@ -65,7 +67,10 @@ module.exports.withdrawal = async (transaction) => {
         transaction.id = v4();
         transaction.accountId = account.id;
 
-        return transactionAdapter.create(transaction);
+        return transactionAdapter.create(transaction).then((transaction) => {
+            accountAdapter.updateBalance(account.id, account.currentBalance - transaction.value);
+            return transaction;
+        });
     });
 }
 
@@ -101,5 +106,10 @@ module.exports.transfer =  async (transaction) => {
     transaction.accountId = accountFrom.id;
     transaction.transferToAccount = accountTo.id;
 
-    return transactionAdapter.create(transaction);
+    return transactionAdapter.create(transaction).then((transaction) => {
+        accountAdapter.updateBalance(accountFrom.id, accountFrom.currentBalance - transaction.value);
+        accountAdapter.updateBalance(accountTo.id, accountTo.currentBalance + transaction.value);
+
+        return transaction;
+    });
 }
