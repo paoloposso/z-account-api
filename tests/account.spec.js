@@ -57,10 +57,18 @@ describe('Account tests', () => {
 
         const res = await request.post('/transaction/deposit').send({
             document: "01234567890",
-            value: 500.95
+            value: 500
         });
 
         expect(res.statusCode).toEqual(200);
+
+        done();
+    });
+
+    it('should show + a half per cent of the deposit', async (done) => {
+        const res = await request.get('/account/bydocument/01234567890');
+
+        expect(res.body.currentBalance).toEqual(502.5);
 
         done();
     });
@@ -77,6 +85,15 @@ describe('Account tests', () => {
         done();
     });
 
+    it('should get zero balance from Jorge', async (done) => {
+
+        const res = await request.get('/account/bydocument/01234567899');
+
+        expect(res.body.currentBalance).toEqual(0);
+
+        done();
+    });
+
     it('should transfer to Jorge', async (done) => {
 
         const res = await request.post('/transaction/transfer').send({
@@ -85,7 +102,10 @@ describe('Account tests', () => {
             value: 200
         });
 
+        const accountJorge = await request.get('/account/bydocument/01234567899');
+
         expect(res.statusCode).toEqual(200);
+        expect(accountJorge.body.currentBalance).toEqual(200);
 
         done();
     });

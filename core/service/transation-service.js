@@ -1,9 +1,12 @@
 
-const { transactionAdapter } = require('./adapter/db/transaction-adapter.js');
-const { accountAdapter } = require('./adapter/db/account-adapter.js');
+const { getTransactionAdapter } = require('../../factories/db-adapter-factory');
+const { getAccountAdapter } = require('../../factories/db-adapter-factory');
 const { v4 } = require('node-uuid');
 
-module.exports.deposit = (transaction) => {
+const accountAdapter = getAccountAdapter();
+const transactionAdapter = getTransactionAdapter();
+
+module.exports.deposit = async (transaction) => {
 
     if (!transaction.value || transaction.value === '' || transaction.value === 0) {
         return Promise.reject({message: 'value is required', type: 'param'});
@@ -15,25 +18,21 @@ module.exports.deposit = (transaction) => {
         return Promise.reject({message: 'document is invalid', type: 'param'});
     }
 
-    return accountAdapter.getByDocument(transaction.document).then(account => {
+    const account = await accountAdapter.getByDocument(transaction.document);
 
-        if (!account || !account.document || account.document === '') {
-            return Promise.reject({message: 'account document is invalid', type: 'notFound'});
-        }
+    if (!account || !account.document || account.document === '') {
+        return Promise.reject({message: 'account document is invalid', type: 'notFound'});
+    }
 
-        transaction.type = 'deposit';
+    transaction.type = 'deposit';
 
-        //add five per cent
-        transaction.value = transaction.value * 1.05;
-        transaction.value = transaction.value.toFixed(2);
-        transaction.accountId = account.id;
+    transaction.accountId = account.id;
         
-        transaction.id = v4();
+    transaction.id = v4();
 
-        return transactionAdapter.create(transaction).then((transaction) => {
-            accountAdapter.updateBalance(account.id, account.currentBalance + transaction.value);
-            return transaction;
-        });
+    return transactionAdapter.create(transaction).then((transaction) => {
+        accountAdapter.updateBalance(account.id, account.currentBalance + (transaction.value * 1.005).toFixed(2));
+        return transaction;
     });
 }
 

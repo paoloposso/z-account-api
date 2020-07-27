@@ -6,10 +6,11 @@ module.exports.connectToMongoDb = () => {
 
     // running locally
     if (!mongoDB) {
-        mongoDB = 'mongodb://localhost:27017/accounts'
-        if (process.env.NODE_ENV === 'test') {
-            mongoDB += '_test';
-        }
+        mongoDB = 'mongodb://localhost:27017/zaccounts'
+    }
+
+    if (process.env.NODE_ENV === 'test') {
+        mongoDB += '_test';
     }
 
     mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true })

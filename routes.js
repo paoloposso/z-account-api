@@ -1,7 +1,7 @@
 const express = require('express');
 // const { AccountController } = require('./controllers/account-controller');
 const { deposit, transfer, withdraw } = require('./core/service/transation-service');
-const { createAccount, getByDocument } = require('./core/service/account');
+const { createAccount, getByDocument } = require('./core/service/account-service');
 
 const app = express();
 
