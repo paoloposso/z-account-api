@@ -1,7 +1,6 @@
 const express = require('express');
-// const { AccountController } = require('./controllers/account-controller');
-const { deposit, transfer, withdraw } = require('./core/service/transation-service');
-const { createAccount, getByDocument } = require('./core/service/account-service');
+const transactionService = require('./core/service/transation-service');
+const accountService = require('./core/service/account-service');
 
 const app = express();
 
@@ -11,7 +10,7 @@ app.get('/', (req, res) => res.send('app up and running!'));
 
 app.post('/account', (req, res) => {
 
-    createAccount(req.body).then((account) => {
+    accountService.createAccount(req.body).then((account) => {
         return res.json(account);
     }).catch((err) => { 
         return handleHttpError(res, err);
@@ -19,7 +18,7 @@ app.post('/account', (req, res) => {
 });
 
 app.get('/account/bydocument/:document', (req, res) => {
-    getByDocument(req.params.document).then((account) => {
+    accountService.getByDocument(req.params.document).then((account) => {
         return res.json(account);
     }).catch((err) => { 
         return handleHttpError(res, err);
@@ -27,7 +26,7 @@ app.get('/account/bydocument/:document', (req, res) => {
 });
 
 app.post('/transaction/deposit', (req, res) => {
-    deposit(req.body).then((transaction) => {
+    transactionService.deposit(req.body).then((transaction) => {
         return res.json(transaction);
     }).catch((err) => { 
         return handleHttpError(res, err);
@@ -35,7 +34,7 @@ app.post('/transaction/deposit', (req, res) => {
 });
 
 app.post('/transaction/transfer', (req, res) => {
-    transfer(req.body).then((transaction) => {
+    transactionService.transfer(req.body).then((transaction) => {
         return res.json(transaction);
     }).catch((err) => { 
         return handleHttpError(res, err);
@@ -43,7 +42,7 @@ app.post('/transaction/transfer', (req, res) => {
 });
 
 app.post('/transaction/withdraw', (req, res) => {
-    withdraw(req.body).then((transaction) => {
+    transactionService.withdraw(req.body).then((transaction) => {
         return res.json(transaction);
     }).catch((err) => { 
         return handleHttpError(res, err);

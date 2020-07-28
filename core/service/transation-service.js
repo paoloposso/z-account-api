@@ -1,10 +1,9 @@
 
-const { getTransactionAdapter } = require('../../factories/db-adapter-factory');
-const { getAccountAdapter } = require('../../factories/db-adapter-factory');
+const dbAdapter = require('../../factories/db-adapter-factory');
 const { v4 } = require('node-uuid');
 
-const accountAdapter = getAccountAdapter();
-const transactionAdapter = getTransactionAdapter();
+const accountAdapter = dbAdapter.getAccountAdapter();
+const transactionAdapter = dbAdapter.getTransactionAdapter();
 
 module.exports.deposit = async (transaction) => {
 

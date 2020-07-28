@@ -46,10 +46,6 @@ class AccountAdapter {
             account.currentBalance = balance;
             account.save();
         });
-
-        // return AccountModel.findOneAndUpdate({_id: id}, {
-        //     currentBalance: balance
-        // });
     }
 }
 

@@ -1,8 +1,8 @@
 
-const { getAccountAdapter } = require('../../factories/db-adapter-factory');
+const dbAdapter = require('../../factories/db-adapter-factory');
 const { generateUuid } = require('../cross-cutting/id-generation');
 
-const accountAdapter = getAccountAdapter();
+const accountAdapter = dbAdapter.getAccountAdapter();
 
 module.exports.createAccount = (account) => {
     if (!account.document || account.document === '') {

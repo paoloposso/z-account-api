@@ -109,8 +109,20 @@ describe('Account tests', () => {
 
         done();
     });
-});
 
-afterAll(async done => {
-    done();
+    it('should not allow to transfer to Jorge', async (done) => {
+
+        const res = await request.post('/transaction/transfer').send({
+            document: "01234567890",
+            documentTo: "01234567899",
+            value: 2000
+        });
+
+        const accountJorge = await request.get('/account/bydocument/01234567899');
+
+        expect(res.statusCode).toEqual(400);
+        expect(accountJorge.body.currentBalance).toEqual(200);
+
+        done();
+    });
 });
