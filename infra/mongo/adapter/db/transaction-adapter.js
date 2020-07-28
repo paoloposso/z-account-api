@@ -1,6 +1,7 @@
 const { TransactionModel } = require('../../transaction-model');
+const { TransactionAdapter } = require('../../../../core/adapters/repository/transaction-repo');
 
-module.exports.create = (transaction) => {
+const create = (transaction) => {
 
     transaction._id = transaction.id;
 
@@ -16,7 +17,7 @@ module.exports.create = (transaction) => {
     });
 }
 
-module.exports.get = (id) => {
+const get = (id) => {
     return TransactionModel.findById(id).then(doc => {
         return {
             id: doc._id,
@@ -28,3 +29,13 @@ module.exports.get = (id) => {
         };
     });
 }
+
+const CTransactionAdapter = function() {
+    TransactionAdapter.apply(this, arguments);
+}
+
+CTransactionAdapter.prototype = Object.create(TransactionAdapter.prototype, { 'constructor': TransactionAdapter });
+CTransactionAdapter.prototype.create = create;
+CTransactionAdapter.prototype.get = get;
+
+module.exports.transactionAdapter = new CTransactionAdapter();

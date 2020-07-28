@@ -1,6 +1,7 @@
-const { AccountModel } = require('../../../../infra/mongo/account-model');
+const { AccountModel } = require('../../account-model');
+const { AccountAdapter } = require('../../../../core/adapters/repository/account-repo');
 
-module.exports.create = async (account) => {
+const create = async (account) => {
     const existing = await AccountModel.find({document: account.document});
 
     if (existing && existing.length > 0)
@@ -22,7 +23,7 @@ module.exports.create = async (account) => {
  * 
  * @param {String} document 
  */
-module.exports.getByDocument = (document) => {
+const getByDocument = (document) => {
     return AccountModel.findOne({document}).then(doc => {
         return {
             name: doc.name,
@@ -38,10 +39,22 @@ module.exports.getByDocument = (document) => {
  * @param {String} id 
  * @param {Number} balance 
  */
-module.exports.updateBalance = (id, balance) => {
+const updateBalance = (id, balance) => {
 
     return AccountModel.findById(id).then(account => {
         account.currentBalance = balance;
         account.save();
     });
 }
+
+const CAccountAdapter = function() {
+    AccountAdapter.apply(this, arguments);
+}
+
+CAccountAdapter.prototype = Object.create(AccountAdapter.prototype, { 'constructor': AccountAdapter });
+
+CAccountAdapter.prototype.getByDocument = getByDocument;
+CAccountAdapter.prototype.create = create;
+CAccountAdapter.prototype.updateBalance = updateBalance;
+
+module.exports.accountAdapter = new CAccountAdapter();

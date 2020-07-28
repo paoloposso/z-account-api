@@ -1,9 +1,9 @@
 
-const dbAdapter = require('../../factories/db-adapter-factory');
-const { v4 } = require('node-uuid');
+const adapterFactory = require('../../factories/db-adapter-factory');
+const { generateUuid } = require('../cross-cutting/id-generation');
 
-const accountAdapter = dbAdapter.getAccountAdapter();
-const transactionAdapter = dbAdapter.getTransactionAdapter();
+const accountAdapter = adapterFactory.getAdapter('AccountAdapter');
+const transactionAdapter = adapterFactory.getAdapter('TransactionAdapter');
 
 module.exports.deposit = async (transaction) => {
 
@@ -27,7 +27,7 @@ module.exports.deposit = async (transaction) => {
 
     transaction.accountId = account.id;
         
-    transaction.id = v4();
+    transaction.id = generateUuid();
 
     return transactionAdapter.create(transaction).then((transaction) => {
         accountAdapter.updateBalance(account.id, account.currentBalance + (transaction.value * 1.005).toFixed(2));
@@ -59,7 +59,7 @@ module.exports.withdraw = async (transaction) => {
             return Promise.reject({message: 'not enough funds', type: 'param'});
         }
         
-        transaction.id = v4();
+        transaction.id = generateUuid();
         transaction.accountId = account.id;
 
         return transactionAdapter.create(transaction).then((transaction) => {
@@ -97,7 +97,7 @@ module.exports.transfer =  async (transaction) => {
         return Promise.reject({message: 'not enough funds', type: 'param'});
     }
     
-    transaction.id = v4();
+    transaction.id = generateUuid();
     transaction.accountId = accountFrom.id;
     transaction.transferToAccount = accountTo.id;
 

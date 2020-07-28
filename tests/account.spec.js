@@ -25,6 +25,7 @@ describe('Account tests', () => {
         });
 
         expect(res.statusCode).toEqual(200);
+        console.log(res.body);
         expect(res.body.name).toEqual('John');
         expect(res.body._id).not.toEqual('');
 
