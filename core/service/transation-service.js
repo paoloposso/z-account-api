@@ -1,5 +1,5 @@
 
-const adapterFactory = require('../../factories/db-adapter-factory');
+const adapterFactory = require('../injection-factory');
 const { generateUuid } = require('../cross-cutting/id-generation');
 
 const accountAdapter = adapterFactory.getAdapter('AccountAdapter');
