@@ -1,9 +1,8 @@
 
 const { generateUuid } = require('../cross-cutting/id-generation');
-const AccountAdapter = require('../adapters/repository/account-repo');
-const adapterFactory = require('../injection-factory');
+const factory = require('../injection-factory');
 
-const accountAdapter = adapterFactory.getAdapter('AccountAdapter');
+accountAdapter = factory.getAdapter('AccountAdapter');
 
 module.exports.createAccount = (account) => {
     if (!account.document || account.document === '') {

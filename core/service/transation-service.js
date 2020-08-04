@@ -1,9 +1,9 @@
 
-const adapterFactory = require('../injection-factory');
+const factory = require('../injection-factory');
 const { generateUuid } = require('../cross-cutting/id-generation');
 
-const accountAdapter = adapterFactory.getAdapter('AccountAdapter');
-const transactionAdapter = adapterFactory.getAdapter('TransactionAdapter');
+const accountAdapter = factory.getAdapter('AccountAdapter');
+const transactionAdapter = factory.getAdapter('TransactionAdapter');
 
 module.exports.deposit = async (transaction) => {
 

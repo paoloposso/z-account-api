@@ -8,14 +8,6 @@ const adapterDict = {
 
 module.exports.getAdapter = (adapterName) => {
       if (!adapterDict[adapterName])
-            throw new Error(`Cannot instantiate concrete implementation of ${adapterName}`)
+            throw new Error(`Cannot instantiate concrete implementation of ${adapterName}`);
       return adapterDict[adapterName];
-}
-
-module.exports.getAccountAdapter = () => {
-      return accountAdapter;
-}
-
-module.exports.getTransactionAdapter = () => {
-      return transactionAdapter;
 }
