@@ -1,13 +1,22 @@
 # z-account-api
 
+## Running the Api with docker-compose
+
 The docker-compose file contains the database and api implementations.
 With docker-compose installed, simply run the following command.
 
 ``docker-compose up -d``
 
-Or run ``npm start`` to start the API. This mode of execution requires the mongodb previously installed.
+The API will be started on port 3000.
 
-In both ways, the API will be started on port 3000.
+## Running the Api
+
+If docker-compose is not installed.
+This mode of execution requires mongodb previously installed and running on port 27017.
+
+Run ``npm start`` to start the API. 
+
+The API will be started on port 3000.
 
 ## Unit tests
 
